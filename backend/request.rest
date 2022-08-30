@@ -1,0 +1,44 @@
+GET http://localhost:5000/users
+
+###
+GET http://localhost:5000/users/2
+
+###
+POST http://localhost:5000/users
+Content-Type: application/json
+
+{
+   "name": "Ichigo",
+   "email": "ichigo@gmail.com"
+}
+
+###
+PATCH http://localhost:5000/users/2
+Content-Type: application/json
+
+{
+   "name": "Ichigoat",
+   "email": "ichigoat@gmail.com"
+}
+
+###
+DELETE http://localhost:5000/users/2
+
+###
+POST http://localhost:5000/create
+Content-Type: application/json
+
+{
+   "title": "Ini Title",
+   "content": "ini content"
+}
+
+
+###
+POST http://localhost:5000/login 
+Content-Type: application/json
+
+{
+   "email": "rizky@gmail.com",
+   "password": "123456"
+}

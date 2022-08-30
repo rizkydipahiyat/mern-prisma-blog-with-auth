@@ -1,0 +1,82 @@
+#0. Jalankan Perintah
+- npm init -y
+
+#1. Langkah Pertama Install 
+- Cara Install : npm i express
+- express
+- cors
+- dotenv
+- cookie-parser
+- jsonwebtoken
+
+#2. Install -D 
+- Cara Install : npm i -D prisma
+- npm i prisma
+- npm nodemon
+
+#3. Install @prisma/client
+- npm i @prisma/client
+
+#4. Initialize Prisma Pada Terminal & Arahkan Ke Folder Backend
+- npx prisma init
+
+#5. Edit Database 
+- Ubah Menjadi mysql
+
+#6. Buat File .env
+- DATABASE_URL="mysql://root:@localhost:3306/myDb?"
+
+#7. Buat Model User, Post, Profile pada folder prisma>schmea.prisma
+- Edit Nama DB
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "mysql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id Int @id @default(autoincrement())
+  name String?
+  email String @unique
+  password String
+  posts Post[]
+  profile Profile?
+}
+
+model Post {
+  id Int @id @default(autoincrement())
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  title String @db.VarChar(255)
+  content String?
+  published Boolean @default(false)
+  author User @relation(fields: [authorId], references: [id])
+  authorId Int
+}
+
+model Profile {
+  id Int @id @default(autoincrement())
+  bio String?
+  user User @relation(fields: [userId], references: [id])
+  userId Int @unique
+}
+
+#7. Running Prisma Migration
+- npx prisma migrate dev
+
+#8. Buat Folder Controller, Routes, Utils
+
+#9. Buka File package.json
+- tambahkan "type": "module" => ES6
+
+#10. Buat File server.js
+
+#11. Edit Scripts pada file package.json
+
+#12. Selesai! Tinggal Ikutin Sisanya!
+- Fokus Pada File Server
+- Fokus Pada Folder Controller & Routes
+- Fokus Pada Folder Utils untuk membuat jsonwebtoken sebagai register/login
