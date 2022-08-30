@@ -64,7 +64,7 @@ export const updatePost = async (req, res) => {
 			data: {
 				title: title,
 				content: content,
-				published: published,
+				published: Boolean(published),
 			},
 		});
 		res.status(200).json(post);

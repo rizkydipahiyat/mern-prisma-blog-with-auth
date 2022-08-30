@@ -18,7 +18,6 @@ const LoginPage = () => {
 	const userLogin = useSelector((state) => state.userLogin);
 
 	const { loading, error, userData } = userLogin;
-	console.log(userData);
 
 	useEffect(() => {
 		if (userData) {

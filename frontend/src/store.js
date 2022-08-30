@@ -7,9 +7,11 @@ import thunk from "redux-thunk";
 import { composeWithDevTools } from "@redux-devtools/extension";
 import {
 	postCreateReducer,
+	postDeleteReducer,
 	postDetailReducer,
 	postListMyReducer,
 	postListReducer,
+	postUpdateReducer,
 } from "./reducers/postReducer";
 import {
 	userDetailReducer,
@@ -23,6 +25,8 @@ const reducer = combineReducers({
 	postDetail: postDetailReducer,
 	postCreate: postCreateReducer,
 	postListMy: postListMyReducer,
+	postUpdate: postUpdateReducer,
+	postDelete: postDeleteReducer,
 	userLogin: userLoginReducer,
 	userRegister: userRegisterReducer,
 	userDetail: userDetailReducer,

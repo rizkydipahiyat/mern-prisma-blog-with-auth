@@ -3,6 +3,7 @@ import Header from "./components/Header";
 import ContentDetail from "./pages/ContentDetail";
 import HomePage from "./pages/HomePage";
 import LoginPage from "./pages/LoginPage";
+import PostEditPage from "./pages/PostEditPage";
 import PostPage from "./pages/PostPage";
 import ProfilePage from "./pages/ProfilePage";
 import RegisterPage from "./pages/RegisterPage";
@@ -15,6 +16,7 @@ function App() {
 				<Routes>
 					<Route path="/" element={<HomePage />} />
 					<Route path="/post/:id" element={<ContentDetail />} />
+					<Route path="/post/:id/edit" element={<PostEditPage />} />
 					<Route path="/login" element={<LoginPage />} />
 					<Route path="/register" element={<RegisterPage />} />
 					<Route path="/create" element={<PostPage />} />

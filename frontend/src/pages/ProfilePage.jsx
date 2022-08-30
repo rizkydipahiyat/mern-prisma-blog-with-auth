@@ -3,7 +3,7 @@ import { Button, Col, Form, Row, Table } from "react-bootstrap";
 import { useDispatch, useSelector } from "react-redux";
 import { LinkContainer } from "react-router-bootstrap";
 import { useNavigate } from "react-router-dom";
-import { listMyPosts } from "../actions/postActions";
+import { deletePost, listMyPosts } from "../actions/postActions";
 import { getUserDetail, updateUserProfile } from "../actions/userActions";
 import Loader from "../components/Loader";
 import Message from "../components/Message";
@@ -34,6 +34,10 @@ const ProfilePage = () => {
 
 	const { success } = userUpdateProfile;
 
+	const postDelete = useSelector((state) => state.postDelete);
+
+	const { success: successDelete } = postDelete;
+
 	useEffect(() => {
 		if (!userData) {
 			navigate("/login");
@@ -47,20 +51,25 @@ const ProfilePage = () => {
 				setEmail(user.email);
 			}
 		}
-	}, [userData, navigate, success, user, dispatch]);
+	}, [userData, navigate, success, user, dispatch, successDelete]);
 
 	const submitHandler = (e) => {
 		e.preventDefault();
 		dispatch(updateUserProfile({ id: user.id, name, email, password }));
 	};
+	const deleteHandler = (id) => {
+		if (window.confirm("Anda Yakin Ingin Menghapus Post Ini?")) {
+			dispatch(deletePost(id));
+		}
+	};
 	return (
 		<Row>
-			<Col md={3}>
+			<Col md={3} className="mb-3">
 				<h3>User Profile</h3>
 				<hr />
 				{error && <Message variant="danger">{error}</Message>}
-				{success && <Message variant="success">Profile Updated</Message>}
 				{loading && <Loader />}
+				{success && <Message variant="success">Profile Updated</Message>}
 				<Form onSubmit={submitHandler}>
 					<Form.Group controlId="name" className="mb-3">
 						<Form.Label>Name</Form.Label>
@@ -98,6 +107,13 @@ const ProfilePage = () => {
 			<Col md={9}>
 				<h3>Our Post</h3>
 				<hr />
+				<Button
+					onClick={() => window.location.reload()}
+					variant="dark"
+					className="mb-3 "
+				>
+					Refresh{" "}
+				</Button>
 				{loadingPosts ? (
 					<Loader />
 				) : errorPosts ? (
@@ -117,15 +133,32 @@ const ProfilePage = () => {
 							{posts.map((post, i) => (
 								<tr key={i}>
 									<td>{i + 1}</td>
-									<td>{post.title}</td>
-									<td>{post.content}</td>
+									<td>
+										<a
+											href={`/post/${post.id}`}
+											style={{ textDecoration: "none", color: "#000" }}
+										>
+											{post.title.substring(0, 25)}
+										</a>
+									</td>
+									<td>{post.content.substring(0, 15)}...</td>
 									<td>{post.published ? "Yes" : "No"}</td>
 									<td>
-										<LinkContainer to={`/post/`}>
+										<LinkContainer
+											to={`/post/${post.id}/edit`}
+											className="mr-2"
+										>
 											<Button className="btn-sm" variant="warning">
-												Detail
+												Edit
 											</Button>
-										</LinkContainer>
+										</LinkContainer>{" "}
+										<Button
+											className="btn-sm"
+											variant="danger"
+											onClick={() => deleteHandler(post.id)}
+										>
+											Delete
+										</Button>
 									</td>
 								</tr>
 							))}
