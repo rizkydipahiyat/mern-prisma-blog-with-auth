@@ -1,4 +1,5 @@
 import { PrismaClient } from "@prisma/client";
+import bcrypt from "bcryptjs";
 
 const prisma = new PrismaClient();
 
@@ -33,8 +34,10 @@ export const getUserById = async (req, res) => {
 };
 
 export const updateUserProfile = async (req, res) => {
-	const { email, name } = req.body;
+	const { email, name, password } = req.body;
 	try {
+		const salt = bcrypt.genSaltSync(10);
+		var hash = bcrypt.hashSync(password, salt);
 		const user = await prisma.user.update({
 			where: {
 				id: Number(req.user.id),
@@ -42,6 +45,7 @@ export const updateUserProfile = async (req, res) => {
 			data: {
 				name: name,
 				email: email,
+				password: hash,
 			},
 		});
 		res.status(200).json(user);
