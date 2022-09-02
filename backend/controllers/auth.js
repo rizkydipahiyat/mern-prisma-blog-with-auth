@@ -30,7 +30,8 @@ export const login = async (req, res) => {
 			},
 		});
 
-		if (!user) return res.status(404).json("Sorry, user not found!");
+		if (!user)
+			return res.status(404).json({ message: "Sorry, user not found!" });
 
 		const isPasswordMatch = await bcrypt.compare(
 			req.body.password,
@@ -38,7 +39,7 @@ export const login = async (req, res) => {
 		);
 
 		if (!isPasswordMatch)
-			return res.status(400).json("Wrong password and email!");
+			return res.status(400).json({ message: "Wrong password and email!" });
 
 		const token = jwt.sign({ id: user.id }, process.env.JWT);
 

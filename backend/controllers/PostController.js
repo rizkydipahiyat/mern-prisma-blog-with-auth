@@ -80,7 +80,7 @@ export const deletePost = async (req, res) => {
 				id: Number(req.params.id),
 			},
 		});
-		res.status(200).json("Post Deleted Successfully!");
+		res.status(200).json({ message: "Post Deleted Successfully!" });
 	} catch (error) {
 		res.status(404).json({ msg: error.message });
 	}
