@@ -8,7 +8,6 @@ import {
 	POST_DELETE_SUCCESS,
 	POST_DETAIL_FAIL,
 	POST_DETAIL_REQUEST,
-	POST_DETAIL_RESET,
 	POST_DETAIL_SUCCESS,
 	POST_LIST_FAIL,
 	POST_LIST_MY_FAIL,
@@ -45,7 +44,7 @@ export const postListReducer = (state = { posts: [] }, action) => {
 export const postDetailReducer = (state = { post: {} }, action) => {
 	switch (action.type) {
 		case POST_DETAIL_REQUEST:
-			return { loading: true, post: {} };
+			return { loading: true, ...state };
 		case POST_DETAIL_SUCCESS:
 			return {
 				loading: false,
@@ -56,8 +55,6 @@ export const postDetailReducer = (state = { post: {} }, action) => {
 				loading: false,
 				error: action.payload,
 			};
-		case POST_DETAIL_RESET:
-			return {};
 		default:
 			return state;
 	}

@@ -62,6 +62,7 @@ const ProfilePage = () => {
 			dispatch(deletePost(id));
 		}
 	};
+
 	return (
 		<Row>
 			<Col md={3} className="mb-3">
@@ -130,6 +131,7 @@ const ProfilePage = () => {
 							</tr>
 						</thead>
 						<tbody>
+							{loadingPosts && <Loader />}
 							{posts.map((post, i) => (
 								<tr key={i}>
 									<td>{i + 1}</td>
@@ -145,7 +147,7 @@ const ProfilePage = () => {
 									<td>{post.published ? "Yes" : "No"}</td>
 									<td>
 										<LinkContainer
-											to={`/post/${post.id}/edit`}
+											to={`/edit/post/${post.id}`}
 											className="mr-2"
 										>
 											<Button className="btn-sm" variant="warning">

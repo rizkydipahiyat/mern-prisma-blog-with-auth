@@ -1,13 +1,17 @@
+import axios from "axios";
 import React, { useEffect, useState } from "react";
 import { Button, Form } from "react-bootstrap";
 import { useDispatch, useSelector } from "react-redux";
 import { useParams } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
-import { detailPost, updatePost } from "../actions/postActions";
+import { updatePost } from "../actions/postActions";
 import FormContainer from "../components/FormContainer";
 import Loader from "../components/Loader";
 import Message from "../components/Message";
-import { POST_UPDATE_RESET } from "../constants/postConstant";
+import {
+	POST_DETAIL_REQUEST,
+	POST_DETAIL_SUCCESS,
+} from "../constants/postConstant";
 
 const PostEditPage = () => {
 	const { id } = useParams();
@@ -26,45 +30,51 @@ const PostEditPage = () => {
 
 	const postUpdate = useSelector((state) => state.postUpdate);
 
-	const { success: successUpdate } = postUpdate;
+	const {
+		loading: loadingUpdate,
+		error: errorUpdate,
+		success: successUpdate,
+	} = postUpdate;
 
 	useEffect(() => {
-		if (successUpdate) {
-			dispatch({ type: POST_UPDATE_RESET });
-			navigate("/profile");
-		} else {
-			if (!post.title || post.id !== id) {
-				dispatch(detailPost(id));
-			}
-			setTitle(post.title);
-			setContent(post.content);
-			setPublished(post.published);
-		}
+		const fetching = async () => {
+			dispatch({ type: POST_DETAIL_REQUEST });
+			const { data } = await axios.get(`/post/${id}`);
+			dispatch({
+				type: POST_DETAIL_SUCCESS,
+			});
+			setTitle(data.title);
+			setContent(data.content);
+			setPublished(data.published);
+		};
+		fetching();
 		// eslint-disable-next-line
-	}, [dispatch, id, navigate, successUpdate]);
+	}, [id]);
 
-	const submitHandler = (e) => {
+	const updateHandler = (e) => {
 		e.preventDefault();
 		dispatch(
 			updatePost({
-				id: id,
+				id,
 				title,
 				content,
 				published,
 			})
 		);
-		window.reload();
 		navigate("/profile");
+		window.reload();
 	};
 	return (
 		<>
 			<FormContainer>
 				<h3 className="text-center mt-5">Edit Post</h3>
 				<hr />
-				{error && <Message variant="danger">{error}</Message>}
+				{loadingUpdate && <Loader />}
+				{errorUpdate && <Message variant="danger">{errorUpdate}</Message>}
 				{loading && <Loader />}
+				{error && <Message variant="danger">{error}</Message>}
 				{successUpdate && <Message variant="success">Post Updated</Message>}
-				<Form onSubmit={submitHandler}>
+				<Form onSubmit={updateHandler}>
 					<Form.Group controlId="title" className="mb-2">
 						<Form.Label>Title</Form.Label>
 						<Form.Control
