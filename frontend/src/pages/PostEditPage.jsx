@@ -26,7 +26,7 @@ const PostEditPage = () => {
 
 	const postDetail = useSelector((state) => state.postDetail);
 	// eslint-disable-next-line
-	const { loading, error, post } = postDetail;
+	const { loading, error } = postDetail;
 
 	const postUpdate = useSelector((state) => state.postUpdate);
 
@@ -62,7 +62,6 @@ const PostEditPage = () => {
 			})
 		);
 		navigate("/profile");
-		window.reload();
 	};
 	return (
 		<>

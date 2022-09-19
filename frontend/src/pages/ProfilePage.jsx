@@ -45,11 +45,11 @@ const ProfilePage = () => {
 			if (!user || !user.name || success) {
 				dispatch({ type: USER_UPDATE_PROFILE_RESET });
 				dispatch(getUserDetail("profile"));
-				dispatch(listMyPosts());
 			} else {
 				setName(user.name);
 				setEmail(user.email);
 			}
+			dispatch(listMyPosts());
 		}
 	}, [userData, navigate, success, user, dispatch, successDelete]);
 
@@ -147,7 +147,7 @@ const ProfilePage = () => {
 									<td>{post.published ? "Yes" : "No"}</td>
 									<td>
 										<LinkContainer
-											to={`/edit/post/${post.id}`}
+											to={`/post/${post.id}/edit`}
 											className="mr-2"
 										>
 											<Button className="btn-sm" variant="warning">
